@@ -18,7 +18,7 @@ postsRouter.get('/', async (req, res, next) => {
           });
         res.send({
           posts
-        });   
+        });
     } catch ({name, message}) {
         next({name, message})
     }
