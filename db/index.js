@@ -199,7 +199,7 @@ async function updateUser(id, fields = {}) {
       }
     }
 
-    // **************************** GETTING DATA BY ************************************
+// **************************** GETTING DATA BY ************************************
 async function getPostsByUser(userId) {
   try {
     const { rows: postIds } = await client.query(`
