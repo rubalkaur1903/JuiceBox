@@ -19,12 +19,11 @@ usersRouter.get('/', async (req, res) => {
 });
 
 usersRouter.post('/login', async (req, res, next) => {
-    const { id, username, password } = req.body;
+    const { username, password } = req.body;
 
-    const token = jwt.sign({ id: `${id}`, username: `${username}`}, process.env.JWT_SECRET);
-
-    const recoveredData = jwt.verify(token, process.env.JWT_SECRET);
-
+    
+    // const recoveredData = jwt.verify(token, process.env.JWT_SECRET);
+    
     if (!username || !password) {
         next({
             name: "MissingCredentialsError",
@@ -35,6 +34,7 @@ usersRouter.post('/login', async (req, res, next) => {
         const user = await getUserByUsername(username);
         
         if (user && user.password == password) {
+            const token = jwt.sign({ id: user.id, username}, process.env.JWT_SECRET);
             res.send({ message: "you're logged in!", token});
         } else {
             next({ 
