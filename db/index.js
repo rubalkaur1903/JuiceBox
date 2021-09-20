@@ -1,6 +1,6 @@
 
 const { Client } = require('pg');
-const client = new Client('postgres://localhost:5432/juicebox-dev');
+const client = new Client(process.env.DATABASE_URL || 'postgres://localhost:5432/juicebox-dev');
 
 // **************************** GETTING DATA ************************************
 async function getAllUsers() {
@@ -258,6 +258,13 @@ async function getPostById (postId) {
       FROM posts
       WHERE id=$1;
     `, [postId]);
+
+    if (!post) {
+      throw {
+        name: "PostNotFoundError",
+        message: "Could not find a post with that postId"
+      };
+    }
 
     const { rows: tags } = await client.query(`
       SELECT tags.*
